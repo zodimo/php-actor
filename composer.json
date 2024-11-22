@@ -33,9 +33,6 @@
     "zodimo/base-return-test": "^0",
     "zodimo/frp-testing": "^0.1.4"
   },
-  "suggest": {
-    "ext-swoole": "Swoole runtime"
-  },
   "scripts": {
     "test": [
       "Composer\\Config::disableProcessTimeout",
