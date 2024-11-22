@@ -13,7 +13,7 @@ use Zodimo\Actor\Runtimes\MailboxFactory;
 class ActorSystem implements ActorSystemInterface
 {
     /**
-     * @var \SplObjectStorage<Address<mixed>,Mailbox>
+     * @var \SplObjectStorage<Address<mixed>,Mailbox<mixed,mixed,mixed>>
      */
     private \SplObjectStorage $mailboxRegistry;
 

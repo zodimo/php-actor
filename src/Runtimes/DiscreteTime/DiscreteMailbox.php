@@ -76,8 +76,6 @@ class DiscreteMailbox implements Mailbox
                 if ($message instanceof $this->messageClass) {
                     /**
                      * @var MESSAGE $message
-                     *
-                     * @phpstan-ignore return.type
                      */
                     return IOMonad::pure(Option::some($message));
                 }
