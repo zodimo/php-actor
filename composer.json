@@ -46,7 +46,7 @@
       "Composer\\Config::disableProcessTimeout",
       "php ./vendor/bin/phpstan analyse"
     ],
-    "php": [
+    "debug-php": [
       "Composer\\Config::disableProcessTimeout",
       "php -dxdebug.mode=debug,develop,profile -dxdebug.start_with_request=yes "
     ]

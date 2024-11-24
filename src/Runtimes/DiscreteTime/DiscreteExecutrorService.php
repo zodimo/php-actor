@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Zodimo\Actor\Runtimes\DiscreteTime;
 
+use Zodimo\Actor\Actor;
 use Zodimo\Actor\Address;
 use Zodimo\Actor\Runtimes\ExecutorService;
 
 class DiscreteExecutrorService implements ExecutorService
 {
     /**
-     * @var array<Address<mixed>>
+     * @var array<Actor<mixed>>
      */
     private array $actors;
 
@@ -24,19 +25,23 @@ class DiscreteExecutrorService implements ExecutorService
         return new self($execStepper);
     }
 
-    public function execute(Address $address): void
+    public function execute(Actor $actor): void
     {
-        $this->actors[] = $address;
+        $this->actors[] = $actor;
     }
 
-    public function run(int $steps = 100): void
+    /**
+     * @param callable(int):bool $until
+     */
+    public function run(callable $until): void
     {
         // step until.... all inboxes empty?
 
         // address must be a client to talk send messages to where ever the mailbox and execution lives
 
-        $counter = $steps;
-        while ($counter >= 0) {
+        // LOOP UNTIL not work left to do  ??
+
+        while ($until($this->execStepper->getCurrentStep())) {
             foreach ($this->actors as $actor) {
                 $result = $actor->run();
                 if ($result->isFailure()) {
@@ -51,7 +56,6 @@ class DiscreteExecutrorService implements ExecutorService
                 }
             }
             $this->execStepper->tick();
-            --$counter;
         }
     }
 }

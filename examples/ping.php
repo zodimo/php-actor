@@ -107,4 +107,4 @@ $actorPongReceiver = $actorSystem->actorOf(Message::class, function (AddressInte
 
 $actorPingReceiver->tell(new Ping($actorPongReceiver));
 
-$discreteExecutorService->run(3);
+$discreteExecutorService->run(fn ($step) => 100 > $step);

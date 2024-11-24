@@ -31,6 +31,8 @@ class DiscreteMailbox implements Mailbox
 
     /**
      * @param class-string<MESSAGE> $messageClass
+     *
+     * @phpstan-ignore property.onlyWritten
      */
     private function __construct(private ExecutionStepper $execStepper, private string $messageClass)
     {
@@ -73,15 +75,18 @@ class DiscreteMailbox implements Mailbox
             // drop messages of the wrong type
             if (!$this->inbox->isEmpty()) {
                 $message = $this->inbox->dequeue();
-                if ($message instanceof $this->messageClass) {
-                    /**
-                     * @var MESSAGE $message
-                     */
-                    return IOMonad::pure(Option::some($message));
-                }
-            } else {
-                break;
+
+                // even dropped my AccountMessage
+                // if ($message instanceof $this->messageClass) {
+                //     /**
+                //      * @var MESSAGE $message
+                //      */
+                //     return IOMonad::pure(Option::some($message));
+                // }
+                return IOMonad::pure(Option::some($message));
             }
+
+            break;
         }
 
         $this->rotateOnStepChange();

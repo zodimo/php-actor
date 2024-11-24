@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Zodimo\Actor\Runtimes;
 
-use Zodimo\Actor\Address;
+use Zodimo\Actor\Actor;
 
 interface ExecutorService
 {
     /**
-     * @param Address<mixed> $address
+     * @param Actor<mixed> $actor
      */
-    public function execute(Address $address): void;
+    public function execute(Actor $actor): void;
 }
