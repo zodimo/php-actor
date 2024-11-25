@@ -14,7 +14,7 @@ use Zodimo\Actor\Runtimes\MailboxFactory;
 class ActorSystem implements ActorSystemInterface
 {
     /**
-     * @var \SplObjectStorage<AddressInterface<mixed>,Mailbox<mixed,mixed,mixed>>
+     * @var \SplObjectStorage<ActrorRefInterface<mixed>,Mailbox<mixed,mixed,mixed>>
      */
     private \SplObjectStorage $mailboxRegistry;
 
@@ -37,23 +37,23 @@ class ActorSystem implements ActorSystemInterface
     /**
      * @template _MESSAGE
      *
-     * @param class-string<_MESSAGE>                                         $messageClass
-     * @param callable(AddressInterface<mixed>):BehaviourInterface<_MESSAGE> $constructor
+     * @param class-string<_MESSAGE>                                           $messageClass
+     * @param callable(ActrorRefInterface<mixed>):BehaviourInterface<_MESSAGE> $constructor
      *
-     * @return AddressInterface<_MESSAGE>
+     * @return ActrorRefInterface<_MESSAGE>
      */
-    public function actorOf(string $messageClass, callable $constructor): AddressInterface
+    public function actorOf(string $messageClass, callable $constructor): ActrorRefInterface
     {
         $mailbox = $this->mailboxFactory->createMailbox($messageClass);
 
         $actor = Actor::create($mailbox, $constructor);
-        $address = Address::create(fn ($message) => $actor->tell($message));
-        $this->mailboxRegistry->attach($address, $mailbox);
-        $addressMessage = AddressMessage::create($address);
+        $ref = ActorRef::create(fn ($message) => $actor->tell($message));
+        $this->mailboxRegistry->attach($ref, $mailbox);
+        $addressMessage = AddressMessage::create($ref);
         $actor->tell($addressMessage);
         // wire up the executor to the actor::run ....
         $this->executorService->execute($actor);
 
-        return $address;
+        return $ref;
     }
 }

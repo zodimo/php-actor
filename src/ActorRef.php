@@ -7,9 +7,9 @@ namespace Zodimo\Actor;
 /**
  * @template MESSAGE
  *
- * @template-implements AddressInterface<MESSAGE>
+ * @template-implements ActrorRefInterface<MESSAGE>
  */
-class Address implements AddressInterface
+class ActorRef implements ActrorRefInterface
 {
     /**
      * @param callable(MESSAGE):void $actorClient
@@ -21,9 +21,9 @@ class Address implements AddressInterface
      *
      * @param callable(_MESSAGE):void $actorClient
      *
-     * @return AddressInterface<_MESSAGE>
+     * @return ActrorRefInterface<_MESSAGE>
      */
-    public static function create(callable $actorClient): AddressInterface
+    public static function create(callable $actorClient): ActrorRefInterface
     {
         return new self($actorClient);
     }

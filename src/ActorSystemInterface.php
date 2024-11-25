@@ -12,10 +12,10 @@ interface ActorSystemInterface
     /**
      * @template _MESSAGE
      *
-     * @param class-string<_MESSAGE>                                $messageClass
-     * @param callable(AddressInterface<mixed>):Behaviour<_MESSAGE> $constructor
+     * @param class-string<_MESSAGE>                                  $messageClass
+     * @param callable(ActrorRefInterface<mixed>):Behaviour<_MESSAGE> $constructor
      *
-     * @return AddressInterface<_MESSAGE>
+     * @return ActrorRefInterface<_MESSAGE>
      */
-    public function actorOf(string $messageClass, callable $constructor): AddressInterface;
+    public function actorOf(string $messageClass, callable $constructor): ActrorRefInterface;
 }

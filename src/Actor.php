@@ -13,14 +13,14 @@ use Zodimo\BaseReturn\Option;
 /**
  * @template MESSAGE
  *
- * @template-implements AddressInterface<MESSAGE>
+ * @template-implements ActrorRefInterface<MESSAGE>
  */
-class Actor implements AddressInterface
+class Actor implements ActrorRefInterface
 {
     /**
-     * @var AddressInterface<MESSAGE>
+     * @var ActrorRefInterface<MESSAGE>
      */
-    private AddressInterface $ownAddress;
+    private ActrorRefInterface $selfRef;
 
     /**
      * @var BehaviourInterface<MESSAGE>
@@ -36,9 +36,9 @@ class Actor implements AddressInterface
 
         $addressHandleBehaviour = Behaviour::create(function ($message) use ($that, $constructor) {
             if (is_object($message) and $message instanceof AddressMessage) {
-                $that->ownAddress = $message->getAddress();
+                $that->selfRef = $message->getAddress();
 
-                return BecomeEffect::create($constructor($that->ownAddress));
+                return BecomeEffect::create($constructor($that->selfRef));
             }
             // log or throw  ?
             // expected first message must be address.... ???

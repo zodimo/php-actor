@@ -6,8 +6,8 @@ namespace Zodimo\Actor\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
 use Zodimo\Actor\Actor;
-use Zodimo\Actor\Address;
-use Zodimo\Actor\AddressInterface;
+use Zodimo\Actor\ActorRef;
+use Zodimo\Actor\ActrorRefInterface;
 use Zodimo\Actor\Behaviour;
 use Zodimo\Actor\EffectInterface;
 use Zodimo\Actor\Effects\DieEffect;
@@ -67,13 +67,13 @@ class ActorTest extends TestCase
     public function testCanCreate(): void
     {
         $mailbox = $this->createMock(Mailbox::class);
-        $contructor = function (AddressInterface $self) {
+        $contructor = function (ActrorRefInterface $self) {
             return Behaviour::create(function ($message): EffectInterface {
                 return StayEffect::create();
             });
         };
         $actor = Actor::create($mailbox, $contructor);
-        $this->assertInstanceOf(AddressInterface::class, $actor);
+        $this->assertInstanceOf(ActrorRefInterface::class, $actor);
         $this->assertInstanceOf(Actor::class, $actor);
     }
 
@@ -82,7 +82,7 @@ class ActorTest extends TestCase
         $mailbox = $this->getMailboxFactory()->createMailbox(\stdClass::class);
 
         $behaviourClosure = $this->createClosureNotCalled();
-        $contructor = function (AddressInterface $self) use ($behaviourClosure) {
+        $contructor = function (ActrorRefInterface $self) use ($behaviourClosure) {
             return Behaviour::create(function ($message) use ($behaviourClosure): EffectInterface {
                 $behaviourClosure();
 
@@ -104,7 +104,7 @@ class ActorTest extends TestCase
 
         $behaviourClosure = $this->createClosureMock();
         $behaviourClosure->expects($this->once())->method('__invoke')->with($message);
-        $contructor = function (AddressInterface $self) use ($behaviourClosure) {
+        $contructor = function (ActrorRefInterface $self) use ($behaviourClosure) {
             return Behaviour::create(function ($message) use ($behaviourClosure): EffectInterface {
                 $behaviourClosure($message);
 
@@ -114,7 +114,7 @@ class ActorTest extends TestCase
 
         $actor = Actor::create($mailbox, $contructor);
 
-        $addressMessage = AddressMessage::create(Address::create(fn ($message) => $actor->tell($message)));
+        $addressMessage = AddressMessage::create(ActorRef::create(fn ($message) => $actor->tell($message)));
         $actor->tell($addressMessage);
         $actor->tell($message);
         $this->getExecutorService()->execute($actor);
@@ -135,7 +135,7 @@ class ActorTest extends TestCase
         $dieActionClosure = $this->createClosureMock();
         $dieActionClosure->expects($this->once())->method('__invoke')->with($message2);
 
-        $contructor = function (AddressInterface $self) use ($handleMessageClosure, $dieActionClosure) {
+        $contructor = function (ActrorRefInterface $self) use ($handleMessageClosure, $dieActionClosure) {
             return Behaviour::create(function ($message) use ($handleMessageClosure, $dieActionClosure): EffectInterface {
                 $handleMessageClosure($message);
 
@@ -144,7 +144,7 @@ class ActorTest extends TestCase
         };
 
         $actor = Actor::create($mailbox, $contructor);
-        $addressMessage = AddressMessage::create(Address::create(fn ($message) => $actor->tell($message)));
+        $addressMessage = AddressMessage::create(ActorRef::create(fn ($message) => $actor->tell($message)));
         $actor->tell($addressMessage);
         $actor->tell($message1);
         $actor->tell($message2);

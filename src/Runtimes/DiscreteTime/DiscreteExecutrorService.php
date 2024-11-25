@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Zodimo\Actor\Runtimes\DiscreteTime;
 
 use Zodimo\Actor\Actor;
-use Zodimo\Actor\Address;
 use Zodimo\Actor\Runtimes\ExecutorService;
 
 class DiscreteExecutrorService implements ExecutorService

@@ -6,7 +6,7 @@ namespace Zodimo\Actor\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Zodimo\Actor\Actor;
-use Zodimo\Actor\AddressInterface;
+use Zodimo\Actor\ActrorRefInterface;
 use Zodimo\Actor\Behaviour;
 use Zodimo\Actor\EffectInterface;
 use Zodimo\Actor\Effects\StayEffect;
@@ -25,13 +25,13 @@ class ActorTest extends TestCase
     public function testCanCreate(): void
     {
         $mailbox = $this->createMock(Mailbox::class);
-        $contructor = function (AddressInterface $self) {
+        $contructor = function (ActrorRefInterface $self) {
             return Behaviour::create(function ($message): EffectInterface {
                 return StayEffect::create();
             });
         };
         $actor = Actor::create($mailbox, $contructor);
-        $this->assertInstanceOf(AddressInterface::class, $actor);
+        $this->assertInstanceOf(ActrorRefInterface::class, $actor);
         $this->assertInstanceOf(Actor::class, $actor);
     }
 }

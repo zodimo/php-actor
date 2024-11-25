@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Zodimo\Actor\Messages;
 
-use Zodimo\Actor\AddressInterface;
+use Zodimo\Actor\ActrorRefInterface;
 
 /**
  * @template MESSAGE
@@ -14,26 +14,26 @@ use Zodimo\Actor\AddressInterface;
 class AddressMessage implements MessageInterface
 {
     /**
-     * @param AddressInterface<MESSAGE> $address
+     * @param ActrorRefInterface<MESSAGE> $address
      */
-    private function __construct(private AddressInterface $address) {}
+    private function __construct(private ActrorRefInterface $address) {}
 
     /**
      * @template _MESSAGE
      *
-     * @param AddressInterface<_MESSAGE> $address
+     * @param ActrorRefInterface<_MESSAGE> $address
      *
      * @return AddressMessage<_MESSAGE>
      */
-    public static function create(AddressInterface $address): AddressMessage
+    public static function create(ActrorRefInterface $address): AddressMessage
     {
         return new self($address);
     }
 
     /**
-     * @return AddressInterface<MESSAGE>
+     * @return ActrorRefInterface<MESSAGE>
      */
-    public function getAddress(): AddressInterface
+    public function getAddress(): ActrorRefInterface
     {
         return $this->address;
     }

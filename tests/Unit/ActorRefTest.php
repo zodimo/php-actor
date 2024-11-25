@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Zodimo\Actor\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Zodimo\Actor\Address;
+use Zodimo\Actor\ActorRef;
 use Zodimo\BaseReturnTest\MockClosureTrait;
 
 /**
@@ -13,14 +13,14 @@ use Zodimo\BaseReturnTest\MockClosureTrait;
  *
  * @coversNothing
  */
-class AddressTest extends TestCase
+class ActorRefTest extends TestCase
 {
     use MockClosureTrait;
 
     public function testCanCreate(): void
     {
         $actorClient = $this->createClosureMock();
-        $address = Address::create($actorClient);
-        $this->assertInstanceOf(Address::class, $address);
+        $ref = ActorRef::create($actorClient);
+        $this->assertInstanceOf(ActorRef::class, $ref);
     }
 }
